@@ -138,9 +138,7 @@ const userLogin =async(req,res)=>{
  const usergetallphonenumbers =async(req,res)=>{
     
     try {
-        const {numbers}=req.body;
     const data = await usermodel.find({_id:{$ne:req._id}}).select("phone")
-    let newarray =[]
     // const filteredArray = numbers.filter((item) =>
     // item.phoneNumbers.map(function(phone){
     //             const phonenumebr =   phone.number.replace(/\s/g, '').replace(/^\+91/,'')
@@ -151,37 +149,17 @@ const userLogin =async(req,res)=>{
     // some((phone) =>phone.number.replace(/\s/g, '')).replace(/^\+91/,'')
     // data.includes(phone.number)
     // var cleanedPhoneNumber = phoneNumber.replace(/\s/g, ''); 
-    console.log(data)
+
     // Extract phone numbers and _id pairs from the second array
-    const idPhoneMap = data.reduce((map, item) => {
-        map[item.phone.toString()] = item._id;
-        return map;
-      }, {});
+  
        
       // Flatten the first array and find matches
-      const matchedData = numbers.reduce((result, item) => {
-        let processedNumbers = new Set(); // To store already processed numbers
-        item.number.forEach(num => {
-          if (idPhoneMap[num] && !processedNumbers.has(num)) {
-            result.push({
-              done: item.done,
-              name: item.name,
-              number: num,
-              matchedIds: idPhoneMap[num]
-            });
-            processedNumbers.add(num); // Add the processed number to the set
-          }
-        });
-        return result;
-      }, []);
-      
-      console.log(matchedData);
       
   
 //   console.log(matchedData);
     // const existingSet = new Set(newarray);
     // const filtereArray = data.filter((item) => existingSet.has(item.phone.toString()))
-    return res.send(success(200,matchedData))
+    return res.send(success(200,data))
  } catch (e) {
     console.log(e.message)
        return res.send(error(500,e.message))
